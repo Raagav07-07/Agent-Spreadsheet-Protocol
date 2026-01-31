@@ -1,0 +1,10 @@
+{
+  "title": "ACTION_PROPOSE Payload",
+  "type": "object",
+  "required": ["action", "details"],
+  "properties": {
+    "action": { "type": "string" },
+    "details": { "type": "object" },
+    "reason": { "type": "string" }
+  }
+}

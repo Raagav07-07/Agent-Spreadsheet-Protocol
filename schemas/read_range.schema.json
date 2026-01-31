@@ -1,0 +1,9 @@
+{
+  "title": "READ_RANGE Payload",
+  "type": "object",
+  "required": ["sheet", "range"],
+  "properties": {
+    "sheet": { "type": "string" },
+    "range": { "type": "string", "example": "A1:D100" }
+  }
+}

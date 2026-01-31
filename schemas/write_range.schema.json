@@ -1,0 +1,13 @@
+{
+  "title": "WRITE_RANGE Payload",
+  "type": "object",
+  "required": ["sheet", "range", "values"],
+  "properties": {
+    "sheet": { "type": "string" },
+    "range": { "type": "string" },
+    "values": {
+      "type": "array",
+      "items": { "type": "array" }
+    }
+  }
+}
