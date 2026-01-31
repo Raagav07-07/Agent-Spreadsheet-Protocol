@@ -131,3 +131,6 @@ ASP follows 5 principles:
 
 DISCOVER → READ → ANALYZE → PROPOSE → APPROVE → EXECUTE → LOG
 
+
+
+
