@@ -36,9 +36,27 @@ pip install -r requirements.txt
 ```
 
 **Note:** If `requirements.txt` doesn't exist, install manually:
+
 ```bash
-pip install fastapi uvicorn pandas narwhals
+pip install fastapi uvicorn pandas narwhals requests python-dotenv google-adk
 ```
+
+## Setting Up Environment Variables
+
+Create a `.env` file in `asp/spreadsheet_agent/` directory:
+
+```bash
+cp asp/spreadsheet_agent/.env.example asp/spreadsheet_agent/.env
+```
+
+Then edit the file with your actual API key:
+
+```dotenv
+GEMINI_API_KEY=your_actual_gemini_api_key
+ASP_SERVER_URL=http://127.0.0.1:8001/asp
+```
+
+Get your Gemini API key from: https://aistudio.google.com/apikey
 
 ## Running the Server
 
@@ -48,7 +66,10 @@ From the project root:
 python -m asp.server
 ```
 
+The server will start on `http://127.0.0.1:8001` and is ready to receive ASP messages.
+
 You should see:
+
 ```
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 ```
@@ -62,11 +83,13 @@ The server is now running and ready to accept ASP messages!
 Open a new terminal and try these commands:
 
 **Discover available tools:**
+
 ```bash
 curl http://localhost:8000/asp/discover
 ```
 
 **List sheets:**
+
 ```bash
 curl -X POST http://localhost:8000/asp \
   -H "Content-Type: application/json" \
@@ -74,6 +97,7 @@ curl -X POST http://localhost:8000/asp \
 ```
 
 **Read a range:**
+
 ```bash
 curl -X POST http://localhost:8000/asp \
   -H "Content-Type: application/json" \
@@ -121,6 +145,7 @@ print(json.dumps(response.json(), indent=2))
 ```
 
 Run it:
+
 ```bash
 python test_asp.py
 ```
@@ -128,6 +153,7 @@ python test_asp.py
 ### Option 3: Interactive API Docs
 
 Open your browser to:
+
 ```
 http://localhost:8000/docs
 ```
@@ -188,6 +214,7 @@ The project includes sample data in `asp/data/sales.csv`. The server uses this f
 ### "ModuleNotFoundError: No module named 'asp'"
 
 **Solution:** Make sure you're running from the project root:
+
 ```bash
 # Correct
 cd Agent-Spreadsheet-Protocol
@@ -201,6 +228,7 @@ python server.py
 ### "Address already in use"
 
 **Solution:** The port 8000 is already in use. Either:
+
 - Kill the process using port 8000
 - Or modify the port in `server.py`:
   ```python
@@ -250,7 +278,7 @@ Here's a complete example in Python:
 import requests
 
 # Configuration
-BASE_URL = "http://localhost:8000"
+BASE_URL = "http://localhost:8001"
 
 # Create a message
 message = {
@@ -275,9 +303,55 @@ else:
     print(f"HTTP Error: {response.status_code}")
 ```
 
-## Performance Considerations
+## Running the Agent
 
-- Reading large ranges (>100,000 rows) may take time
+Once the ASP server is running, you can launch the agent in a separate terminal:
+
+```bash
+# Make sure you're in the project root
+adk web asp/spreadsheet_agent
+```
+
+This will:
+
+1. Load environment variables from `asp/spreadsheet_agent/.env`
+2. Start the ADK web interface at `http://127.0.0.1:8080`
+3. Connect to the ASP server at `http://127.0.0.1:8001/asp`
+
+### Agent-to-Server Interaction Flow
+
+The agent uses three main tools to interact with the ASP server:
+
+1. **tool_discover** – Gets available tools from the ASP server
+
+   ```
+   GET http://127.0.0.1:8001/asp/discover
+   ```
+
+2. **tool_get_sheet_list** – Lists all available sheets
+
+   ```
+   POST http://127.0.0.1:8001/asp
+   {"type": "SHEET_LIST", "payload": {}}
+   ```
+
+3. **tool_read_range** – Reads data from specific cell ranges
+   ```
+   POST http://127.0.0.1:8001/asp
+   {
+     "type": "READ_RANGE",
+     "payload": {"sheet": "sales", "range": "A1:C10"}
+   }
+   ```
+
+### Example Agent Interaction
+
+1. User asks: "Show me the first 10 rows of the sales sheet"
+2. Agent calls `tool_discover()` to find available tools
+3. Agent calls `tool_get_sheet_list()` to verify sheet exists
+4. Agent calls `tool_read_range("sales", "A1:Z10")` to fetch the data
+5. Agent returns formatted results to the user
+
 - Currently, entire ranges are loaded into memory
 - Streaming large datasets is planned for future versions
 
@@ -296,6 +370,6 @@ Press `Ctrl+C` in the terminal running the server.
 
 ---
 
-**You're all set!** 🎉 
+**You're all set!** 🎉
 
 Start making requests to `http://localhost:8000/asp` and explore the ASP protocol.

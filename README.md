@@ -44,7 +44,7 @@ pip install -r requirements.txt
 python -m asp.server
 ```
 
-The ASP server will start on `http://127.0.0.1:8000`
+The ASP server will start on `http://127.0.0.1:8001`
 
 ### Example: Reading a Sheet
 
@@ -53,6 +53,7 @@ curl -X GET http://127.0.0.1:8000/asp/discover
 ```
 
 Response:
+
 ```json
 {
   "status": "DISCOVER_RESPONSE",
@@ -88,22 +89,26 @@ Agent-Spreadsheet-Protocol/
 ## Core Message Types
 
 ### Read/Query Operations
+
 - `SHEET_LIST` – List all available sheets
 - `SHEET_SCHEMA` – Get column definitions and types
 - `READ_RANGE` – Read specific cell ranges
 - `SHEET_SUMMARY` – High-level data overview
 
 ### Write Operations
+
 - `WRITE_RANGE` – Direct cell writes (requires approval)
 - `FORMULA_INSERT` – Insert formulas
 - `STRUCTURE_CHANGE` – Modify sheet structure
 
 ### Intelligence Operations
+
 - `ANOMALY_DETECT` – Identify outliers
 - `TREND_ANALYSIS` – Detect patterns
 - `INSIGHT_REPORT` – Generate summaries
 
 ### Safety/Control
+
 - `ACTION_PROPOSE` – Suggest a write operation
 - `ACTION_APPROVE` – Approve an action
 - `ACTION_EXECUTE` – Execute an approved action
@@ -163,19 +168,57 @@ All ASP messages follow this envelope structure:
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/asp/discover` | Get available tools and message types |
-| POST | `/asp` | Send ASP message to handler |
-| GET | `/docs` | Swagger API documentation |
+| Method | Endpoint        | Description                           |
+| ------ | --------------- | ------------------------------------- |
+| GET    | `/asp/discover` | Get available tools and message types |
+| POST   | `/asp`          | Send ASP message to handler           |
+| GET    | `/docs`         | Swagger API documentation             |
 
 ## Contributing
 
 We welcome contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for:
+
 - Code style guidelines
 - How to submit issues and PRs
 - Development setup
 - Testing requirements
+
+## Using with AI Agents
+
+ASP includes a built-in agent powered by Google ADK that can interact with your spreadsheets:
+
+### Setup
+
+1. Set up environment variables:
+
+   ```bash
+   cp asp/spreadsheet_agent/.env.example asp/spreadsheet_agent/.env
+   # Edit with your Gemini API key
+   ```
+
+2. Start the ASP server:
+
+   ```bash
+   python -m asp.server
+   ```
+
+3. Launch the agent (in a separate terminal):
+
+   ```bash
+   adk web asp/spreadsheet_agent
+   ```
+
+4. Open your browser to `http://127.0.0.1:8080` and start chatting with the agent!
+
+### How the Agent Works
+
+The agent uses three tools to safely interact with your spreadsheets:
+
+- **Discover** – Queries what tools are available
+- **List Sheets** – Shows all available sheets
+- **Read Range** – Fetches data from specific cell ranges
+
+The agent intelligently discovers available tools before using them and focuses only on tools needed to answer your questions.
 
 ## Supported Backends
 

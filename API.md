@@ -24,6 +24,7 @@ All responses follow the ASP envelope format:
 ```
 
 **Response Types:**
+
 - `DATA_RESPONSE` – Successful data operation
 - `DISCOVER_RESPONSE` – Tool/capability discovery
 - `ERROR` – Error occurred
@@ -35,11 +36,13 @@ All responses follow the ASP envelope format:
 Retrieve available tools and message types the server supports.
 
 **Request**
+
 ```http
 GET /asp/discover
 ```
 
 **Response (200 OK)**
+
 ```json
 {
   "status": "DISCOVER_RESPONSE",
@@ -63,6 +66,7 @@ GET /asp/discover
 ```
 
 **cURL Example**
+
 ```bash
 curl -X GET http://localhost:8000/asp/discover
 ```
@@ -74,6 +78,7 @@ curl -X GET http://localhost:8000/asp/discover
 Send a message to be processed by the appropriate handler.
 
 **Request**
+
 ```http
 POST /asp
 Content-Type: application/json
@@ -85,6 +90,7 @@ Content-Type: application/json
 ```
 
 **Response (200 OK)**
+
 ```json
 {
   "status": "DATA_RESPONSE",
@@ -93,6 +99,7 @@ Content-Type: application/json
 ```
 
 **Response (400 Bad Request)**
+
 ```json
 {
   "status": "ERROR",
@@ -104,6 +111,7 @@ Content-Type: application/json
 ```
 
 **Response (404 Not Found)**
+
 ```json
 {
   "status": "ERROR",
@@ -123,6 +131,7 @@ Content-Type: application/json
 List all available sheets in the connected backend.
 
 **Request**
+
 ```json
 {
   "type": "SHEET_LIST",
@@ -131,6 +140,7 @@ List all available sheets in the connected backend.
 ```
 
 **Response**
+
 ```json
 {
   "status": "DATA_RESPONSE",
@@ -141,6 +151,7 @@ List all available sheets in the connected backend.
 ```
 
 **cURL Example**
+
 ```bash
 curl -X POST http://localhost:8000/asp \
   -H "Content-Type: application/json" \
@@ -157,6 +168,7 @@ curl -X POST http://localhost:8000/asp \
 Read a range of cells from a specific sheet.
 
 **Request**
+
 ```json
 {
   "type": "READ_RANGE",
@@ -174,6 +186,7 @@ Read a range of cells from a specific sheet.
 | range | string | Yes | Range in format "A1:D100" |
 
 **Response**
+
 ```json
 {
   "status": "DATA_RESPONSE",
@@ -189,6 +202,7 @@ Read a range of cells from a specific sheet.
 ```
 
 **cURL Example**
+
 ```bash
 curl -X POST http://localhost:8000/asp \
   -H "Content-Type: application/json" \
@@ -202,6 +216,7 @@ curl -X POST http://localhost:8000/asp \
 ```
 
 **Error Cases**
+
 ```json
 {
   "status": "ERROR",
@@ -236,11 +251,7 @@ Write data to a range of cells.
   "payload": {
     "sheet": "Sales",
     "range": "E1:E100",
-    "values": [
-      [100],
-      [200],
-      [300]
-    ]
+    "values": [[100], [200], [300]]
   }
 }
 ```
@@ -296,6 +307,7 @@ Get column definitions and data types for a sheet.
 ```
 
 Response:
+
 ```json
 {
   "status": "DATA_RESPONSE",
@@ -320,12 +332,12 @@ Response:
 
 ## HTTP Status Codes
 
-| Code | Meaning |
-|------|---------|
-| 200 | Success |
-| 400 | Bad Request (validation error) |
-| 404 | Not Found (unknown message type) |
-| 500 | Internal Server Error |
+| Code | Meaning                          |
+| ---- | -------------------------------- |
+| 200  | Success                          |
+| 400  | Bad Request (validation error)   |
+| 404  | Not Found (unknown message type) |
+| 500  | Internal Server Error            |
 
 ## Error Response Format
 
@@ -343,6 +355,7 @@ All errors follow this format:
 ```
 
 **Common Error Codes:**
+
 - `UNKNOWN_TYPE` – Message type not recognized
 - `VALIDATION_ERROR` – Invalid message format
 - `SHEET_NOT_FOUND` – Referenced sheet doesn't exist
@@ -398,6 +411,7 @@ http://localhost:8000/docs
 ```
 
 Alternative docs (ReDoc):
+
 ```
 http://localhost:8000/redoc
 ```
@@ -427,6 +441,7 @@ See [CHANGELOG.md](CHANGELOG.md) for API changes across versions.
 ## Support
 
 For issues or questions about the API:
+
 - 📖 [Full Documentation](README.md)
 - 🐛 [Report Issues](../../issues)
 - 📧 Contact: [your-email@example.com]

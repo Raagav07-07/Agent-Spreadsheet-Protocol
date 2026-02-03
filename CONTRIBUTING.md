@@ -11,6 +11,7 @@ Please be respectful and inclusive. We are committed to providing a welcoming en
 ### 1. Reporting Bugs
 
 Found a bug? Please create an issue with:
+
 - **Clear title** describing the problem
 - **Steps to reproduce** the issue
 - **Expected behavior** vs. actual behavior
@@ -20,6 +21,7 @@ Found a bug? Please create an issue with:
 ### 2. Suggesting Features
 
 Have an idea for improvement? Open an issue with:
+
 - **Descriptive title**
 - **Use case** explaining why this feature is needed
 - **Proposed solution** (optional)
@@ -46,6 +48,7 @@ pip install -r requirements-dev.txt  # Development dependencies
 #### Making Changes
 
 1. **Create a feature branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    # or
@@ -58,20 +61,23 @@ pip install -r requirements-dev.txt  # Development dependencies
    - Update documentation as needed
 
 3. **Test your changes**
+
    ```bash
    python -m pytest tests/
    ```
 
 4. **Commit with clear messages**
+
    ```bash
    git add .
-   git commit -m "feat: Add new feature" 
+   git commit -m "feat: Add new feature"
    # or
    git commit -m "fix: Resolve issue with X"
    git commit -m "docs: Update README with examples"
    ```
 
 5. **Push to your fork**
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -93,6 +99,7 @@ We follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) with these specific
 - **Naming**: `snake_case` for functions/variables, `PascalCase` for classes
 
 Example:
+
 ```python
 # Standard library imports
 import os
@@ -126,11 +133,11 @@ Use type hints for all functions:
 def read_range(self, sheet: str, cell_range: str) -> list[dict]:
     """
     Read a range of cells from a sheet.
-    
+
     Args:
         sheet: Sheet name
         cell_range: Range in format 'A1:D100'
-        
+
     Returns:
         List of dictionaries representing rows
     """
@@ -145,16 +152,16 @@ Use Google-style docstrings:
 def your_function(param1: str, param2: int) -> bool:
     """
     Brief one-line description.
-    
+
     Longer description if needed, explaining purpose and behavior.
-    
+
     Args:
         param1: Description of param1
         param2: Description of param2
-        
+
     Returns:
         Description of return value
-        
+
     Raises:
         ValueError: When X happens
         TypeError: When Y happens
@@ -187,23 +194,23 @@ from asp.backends.csv_backend import CSVBackend
 
 class TestCSVBackend:
     """Test suite for CSVBackend."""
-    
+
     @pytest.fixture
     def backend(self):
         """Create a test backend instance."""
         return CSVBackend(folder="test_data")
-    
+
     def test_list_sheets(self, backend):
         """Test listing available sheets."""
         sheets = backend.list_sheets()
         assert isinstance(sheets, list)
         assert len(sheets) > 0
-    
+
     def test_parse_range_valid(self, backend):
         """Test parsing valid range format."""
         result = backend.parse_range("A1:D100")
         assert result == (0, 100, 0, 4)
-    
+
     def test_parse_range_invalid(self, backend):
         """Test parsing invalid range raises error."""
         with pytest.raises(ValueError):
@@ -227,6 +234,7 @@ class TestCSVBackend:
 ### Architecture Documentation
 
 For significant changes to architecture:
+
 - Update relevant `.md` files
 - Include diagrams if helpful
 - Explain design decisions
@@ -261,6 +269,7 @@ Use conventional commits:
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -270,6 +279,7 @@ Use conventional commits:
 - `chore`: Build, dependencies, etc.
 
 **Examples:**
+
 ```
 feat: Add Google Sheets backend
 
@@ -315,6 +325,7 @@ test: Add test cases for col_to_index method
 ## Release Process
 
 Maintainers will:
+
 1. Update version number
 2. Update CHANGELOG
 3. Create release tag

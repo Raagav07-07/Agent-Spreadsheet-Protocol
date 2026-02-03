@@ -87,13 +87,14 @@ class SpreadsheetBackend(ABC):
     @abstractmethod
     def list_sheets(self) -> list[str]:
         """List all available sheets."""
-        
+
     @abstractmethod
     def read_range(self, sheet: str, cell_range: str) -> list[dict]:
         """Read a specific range from a sheet."""
 ```
 
 Implementations:
+
 - `CSVBackend` – Local CSV files
 - `GoogleSheetsBackend` – Google Sheets API (coming soon)
 - `ExcelBackend` – Excel files (coming soon)
@@ -105,7 +106,7 @@ Handles ASP message format and validation:
 ```python
 def asp_response(status: str, data: dict) -> dict:
     """Wrap response in ASP envelope."""
-    
+
 def validate_message(message: dict, schema_name: str) -> bool:
     """Validate message against JSON schema."""
 ```
@@ -117,7 +118,7 @@ Maps message types to handler functions:
 ```python
 def register_handler(message_type: str, handler: callable) -> None:
     """Register a handler for a message type."""
-    
+
 def get_handler(message_type: str) -> callable:
     """Get handler for a message type."""
 ```
@@ -162,16 +163,16 @@ from asp.core.backend import SpreadsheetBackend
 
 class YourBackend(SpreadsheetBackend):
     """Backend for [Your System]."""
-    
+
     def __init__(self, config: dict):
         """Initialize backend with configuration."""
         self.config = config
-    
+
     def list_sheets(self) -> list[str]:
         """List all available sheets."""
         # Implementation here
         pass
-    
+
     def read_range(self, sheet: str, cell_range: str) -> list[dict]:
         """Read a specific range from a sheet."""
         # Implementation here
@@ -207,7 +208,7 @@ class TestYourBackend:
     @pytest.fixture
     def backend(self):
         return YourBackend(config={...})
-    
+
     def test_list_sheets(self, backend):
         sheets = backend.list_sheets()
         assert isinstance(sheets, list)
@@ -226,23 +227,23 @@ from asp.core.registry import register_handler
 def handle_your_message(message: dict, backend: SpreadsheetBackend) -> dict:
     """
     Handle YOUR_MESSAGE_TYPE message.
-    
+
     Args:
         message: ASP message dict
         backend: SpreadsheetBackend instance
-        
+
     Returns:
         Result dictionary
     """
     payload = message.get("payload", {})
-    
+
     # Validate
     if "required_field" not in payload:
         raise ValueError("Missing required_field")
-    
+
     # Process
     result = backend.your_method(payload["required_field"])
-    
+
     return {"result": result}
 
 # Register handler
@@ -304,21 +305,21 @@ from asp.backends.csv_backend import CSVBackend
 
 class TestCSVBackend:
     """Test suite for CSVBackend."""
-    
+
     @pytest.fixture
     def backend(self):
         """Fixture: create backend instance."""
         return CSVBackend()
-    
+
     @pytest.fixture
     def sample_data(self):
         """Fixture: sample test data."""
         return ["row1", "row2"]
-    
+
     def test_initialization(self, backend):
         """Test: backend initializes correctly."""
         assert backend is not None
-    
+
     def test_list_sheets(self, backend):
         """Test: list_sheets returns list."""
         result = backend.list_sheets()
@@ -333,7 +334,7 @@ from unittest.mock import Mock, patch
 def test_with_mock():
     mock_backend = Mock()
     mock_backend.list_sheets.return_value = ["Sheet1", "Sheet2"]
-    
+
     result = mock_backend.list_sheets()
     assert result == ["Sheet1", "Sheet2"]
 ```
@@ -367,24 +368,24 @@ Create `.vscode/launch.json`:
 
 ```json
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Python: Current File",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal"
-        },
-        {
-            "name": "Python: FastAPI",
-            "type": "python",
-            "request": "launch",
-            "module": "uvicorn",
-            "args": ["asp.server:app", "--reload"],
-            "jinja": true
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Python: FastAPI",
+      "type": "python",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["asp.server:app", "--reload"],
+      "jinja": true
+    }
+  ]
 }
 ```
 
